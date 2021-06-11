@@ -339,7 +339,7 @@ function updateTime() {
         id("selectTime").textContent=0;
         time = 0;
     }
-    id("selectTime").value=parseInt(time/60)+'m'+" "+time%60+'s';
+    id("selectTime").value=time;
     id("timer").innerText=parseInt(time/60)+'m'+" "+time%60+'s';
     console.log(parseInt(time/60)+'m'+" "+time%60+'s');
 }
