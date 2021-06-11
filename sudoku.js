@@ -189,6 +189,9 @@ function startGame() {
 function startTimer() {
     timer = setInterval(function () {
         currentTime--;
+        if(currentTime==0) {
+            endGame();
+        }
         id("timer").innerText=parseInt(currentTime/60)+'m'+" "+currentTime%60+'s';
     },1000)
     
