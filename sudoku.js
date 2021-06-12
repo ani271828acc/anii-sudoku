@@ -245,6 +245,7 @@ function updateMove() {
         }
 
     }    
+    resolve();
 }
 
 function endGame() {
@@ -273,15 +274,17 @@ function endGame() {
 
 }
 
-function autofill() {
+async function autofill() {
     for(let i=0;i<81&&spaceCount>1;i++) {
-        if(puzzle[i]=='.') {
-            id(i).innerText = solution[i];
+        if(puzzle[i]=='.'&&id(i).innerText=="") {
+            id(i).innerText=solution[i];
             spaceCount--;
         }
     }
 
 }
+
+
 
 function destroy() {
     clearInterval(timer);
