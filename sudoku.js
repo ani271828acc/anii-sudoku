@@ -97,7 +97,7 @@ let check = 0;
 let puzzle;
 let solution;
 let spaceCount = 0;
-let disableSelect;
+let disable;
 let time = 180;
 let lives = 10;
 let currentLives;
@@ -111,6 +111,7 @@ window.onload = function() {
     updateLevel();
     updateLives();
     updateTime();
+    disable = true;
 }
 function initialSetup() {
     // generate empty board and keypad
@@ -142,7 +143,6 @@ function initialSetup() {
         cell.addEventListener("click",keypadEvent);
         id("keypad").appendChild(cell);
     }
-    disableSelect = true;
 }
 
 
@@ -217,17 +217,17 @@ function updateMove() {
            let new_element = old_element.cloneNode(true);
            old_element.parentNode.replaceChild(new_element, old_element);
            id(selectedCell).innerText=selectedNum;
-           disable=1;
+           disable=true;
            setTimeout(function () {
             id(selectedCell).classList.remove("correct");
             id(-selectedNum).classList.remove("selected");
             id(selectedCell).classList.remove("selected");
             selectedNum = null;
             selectedCell = null;
-            disable = 0;
+            disable = false;
            },1000);
         } else {
-            disable = 1;
+            disable = true;
             id(selectedCell).classList.add("incorrect");
             setTimeout(function () {
                 id(selectedCell).classList.remove("incorrect");
@@ -239,7 +239,7 @@ function updateMove() {
                 currentlives--;
                 id("lives").innerText="lives: " + currentlives;
                 if(currentlives==0){ console.log("end"); endGame();}
-                else disable = 0;
+                else disable = false;
                },1000);
 
         }
@@ -249,7 +249,7 @@ function updateMove() {
 }
 
 function endGame() {
-    disable = 1;
+    disable = true;
     destroy();
     if(spaceCount) {
         for(let i=0;i<81;i+=9) {
@@ -274,11 +274,13 @@ function endGame() {
 
 }
 
-async function autofill() {
-    for(let i=0;i<81&&spaceCount>1;i++) {
-        if(puzzle[i]=='.'&&id(i).innerText=="") {
-            id(i).innerText=solution[i];
-            spaceCount--;
+function autofill() {
+    if(!disable) {
+        for(let i=0;i<81&&spaceCount>1;i++) {
+            if(puzzle[i]=='.'&&id(i).innerText=="") {
+                id(i).innerText=solution[i];
+                spaceCount--;
+            }
         }
     }
 
@@ -287,6 +289,7 @@ async function autofill() {
 
 
 function destroy() {
+    disable = true;
     clearInterval(timer);
     id("timer").innerText=parseInt(time/60)+'m'+" "+time%60+'s';
     for(let i=0;i<81;i++) {
